@@ -2,7 +2,7 @@ from imapclient import IMAPClient
 import email
 import os
 
-try:
+def notYet():
     server = IMAPClient('localhost', port=1143, ssl=False)  # Port configured by ProtonMail Bridge
     server.login('mevvieReceiver@proton.me', 'YziUP5FKGf1sryjvTOaDsQ')
     print("Connected to the server")
@@ -19,5 +19,3 @@ try:
                 with open(save_path, 'wb') as f:
                     f.write(part.get_payload(decode=True))
 
-except Exception as e:
-    print(f"An error occurred: {e}")
