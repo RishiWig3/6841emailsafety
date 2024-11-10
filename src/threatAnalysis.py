@@ -5,7 +5,7 @@ from dotenv import load_dotenv
 
 
 def fetch_report_from_virustotal(client, file_hash):
-    # Fetch the report of a file from VirusTotal using its hash
+    """Fetch the report of a file from VirusTotal using its hash"""
     return client.get_object(f"/files/{file_hash}")
 
 
@@ -18,8 +18,10 @@ def getFileNameFromQuarantine():
 
 
 def extract_hashes():
-    # Returns the hash of the quarantined file
+    """Returns the hash of the quarantined file"""
     file = getFileNameFromQuarantine()
+    if (file == "Error"):
+        return
     with open(file, "rb") as quarantinedFile:
         bytes = quarantinedFile.read()
         return hashlib.sha256(bytes).hexdigest();
@@ -28,6 +30,7 @@ def extract_hashes():
 def print_last_analysis_stats(response_dict):
     """Print the last analysis stats from the VirusTotal response."""
     try:
+        print("File name: " + response_dict['attributes']['meaningful_name'])
         last_analysis_stats = response_dict['attributes']['last_analysis_stats']
         print("Last Analysis Stats:")
         for key, value in last_analysis_stats.items():
@@ -43,7 +46,7 @@ def retrieve_api_key():
     return api_key
 
 
-def main():
+def controller():
     api_key = retrieve_api_key()
     
     with vt.Client(api_key) as client:
